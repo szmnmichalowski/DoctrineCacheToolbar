@@ -88,7 +88,7 @@ class CacheCollectorTest extends TestCase
         $cacheLogger = 'test';
         $this->collector->setCacheLogger($cacheLogger);
 
-        $this->assertInstanceOf($cacheLogger, $this->collector->getCacheLogger());
+        $this->assertEquals($cacheLogger, $this->collector->getCacheLogger());
     }
 
     /**
@@ -99,6 +99,7 @@ class CacheCollectorTest extends TestCase
         $this->expectException(\LogicException::class);
 
         $event = $this->prophesize(MvcEvent::class);
+
         $this->collector->collect($event->reveal());
     }
 }
