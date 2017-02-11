@@ -10,7 +10,8 @@
 namespace DoctrineCacheToolbarTest\Collector;
 
 use PHPUnit\Framework\TestCase;
-use Zend\Mvc\MvcEvent;
+use Doctrine\ORM\Cache\CacheConfiguration;
+use Doctrine\ORM\Cache\Logging\StatisticsCacheLogger;
 use ZendDeveloperTools\Collector\AbstractCollector;
 use DoctrineCacheToolbar\Collector\CacheCollector;
 use Doctrine\ORM\EntityManager;
@@ -92,14 +93,60 @@ class CacheCollectorTest extends TestCase
     }
 
     /**
-     * @covers DoctrineCacheToolbar\Collector\CacheCollector::collect
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheStats
      */
-    public function testCollectMethodWhenEntityManagerIsNotSet()
+    public function testGetCacheStatsWhenWhenEntityManagerIsNotSet()
     {
         $this->expectException(\LogicException::class);
 
-        $event = $this->prophesize(MvcEvent::class);
+        $this->collector->getCacheStats();
+    }
 
-        $this->collector->collect($event->reveal());
+    /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheStats
+     */
+    public function testGetCacheStatsWhenEntityManagerIsSet()
+    {
+        $cacheConfig = $this->prophesize(CacheConfiguration::class);
+        $config = $this->prophesize(Configuration::class);
+        $config->getSecondLevelCacheConfiguration()
+            ->willReturn($cacheConfig)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+
+        $this->collector->setEntityManager($em->reveal());
+
+        $data = $this->collector->getCacheStats();
+        $this->assertArrayHasKey('cache-toolbar', $data);
+        $this->assertArrayHasKey('total', $data['cache-toolbar']);
+        $this->assertArrayHasKey('put', $data['cache-toolbar']['total']);
+        $this->assertArrayHasKey('hit', $data['cache-toolbar']['total']);
+        $this->assertArrayHasKey('miss', $data['cache-toolbar']['total']);
+    }
+
+    /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheStats
+     */
+    public function testGetCacheStatsDefaultValues()
+    {
+        $cacheConfig = $this->prophesize(CacheConfiguration::class);
+        $config = $this->prophesize(Configuration::class);
+        $config->getSecondLevelCacheConfiguration()
+            ->willReturn($cacheConfig)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+
+        $this->collector->setEntityManager($em->reveal());
+
+        $data = $this->collector->getCacheStats();
+        $this->assertEquals(0, $data['cache-toolbar']['total']['put']);
+        $this->assertEquals(0, $data['cache-toolbar']['total']['hit']);
+        $this->assertEquals(0, $data['cache-toolbar']['total']['miss']);
     }
 }

@@ -41,10 +41,26 @@ class CacheCollector extends AbstractCollector
 
     public function collect(MvcEvent $mvcEvent)
     {
+    }
+
+    public function getCacheStats()
+    {
         if (!$this->getEntityManager()) {
             throw new \LogicException('Entity Manager must be set.');
         }
 
+        /* @var \Doctrine\ORM\Cache\Logging\StatisticsCacheLogger $logger */
+        $logger = new $this->cacheLogger;
+        $config = $this->getEntityManager()->getConfiguration();
+        $config->getSecondLevelCacheConfiguration()
+            ->setCacheLogger($logger);
+
+        $this->data['cache-toolbar']['total'] = [
+            'put' => $logger->getPutCount(),
+            'hit' => $logger->getPutCount(),
+            'miss' => $logger->getPutCount(),
+        ];
+        return $this->data;
     }
 
     /**
