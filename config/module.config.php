@@ -7,7 +7,14 @@
  * @data:       2017-02-08 19:36
  */
 
+use DoctrineCacheToolbar\Factory\Collector\CacheCollectorFactory;
+
 return [
+    'service_manager' => [
+        'factories' => [
+            'cache.toolbar' => CacheCollectorFactory::class
+        ],
+    ],
     'view_manager' => [
         'template_map' => [
         ],
@@ -15,10 +22,12 @@ return [
     'zenddevelopertools' => [
         'profiler' => [
             'collectors' => [
+                'cache.toolbar' => 'cache.toolbar'
             ],
         ],
         'toolbar' => [
             'entries' => [
+                'cache.toolbar' => 'zend-developer-tools/toolbar/cache-data'
             ],
         ],
     ],
