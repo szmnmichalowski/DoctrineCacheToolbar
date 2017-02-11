@@ -2,8 +2,13 @@
 
 <phpunit bootstrap="Bootstrap.php" colors="true">
     <testsuites>
-        <testsuite name="zf2tutorial">
+        <testsuite name="DoctrineCacheToolbar">
             <directory>./DoctrineCacheToolbarTest</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../../src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
