@@ -12,6 +12,7 @@ namespace DoctrineCacheToolbarTest\Collector;
 use PHPUnit\Framework\TestCase;
 use Doctrine\ORM\Cache\CacheConfiguration;
 use Doctrine\ORM\Cache\Logging\StatisticsCacheLogger;
+use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Collector\AbstractCollector;
 use DoctrineCacheToolbar\Collector\CacheCollector;
 use Doctrine\ORM\EntityManager;
@@ -148,5 +149,13 @@ class CacheCollectorTest extends TestCase
         $this->assertEquals(0, $data['cache-toolbar']['total']['put']);
         $this->assertEquals(0, $data['cache-toolbar']['total']['hit']);
         $this->assertEquals(0, $data['cache-toolbar']['total']['miss']);
+    }
+
+    /**
+     * @covers  DoctrineCacheToolbar\Collector\CacheCollector::collect
+     */
+    public function testCollect()
+    {
+        $this->assertTrue(is_array($this->collector->collect(new MvcEvent())));
     }
 }

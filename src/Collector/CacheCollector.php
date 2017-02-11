@@ -41,6 +41,9 @@ class CacheCollector extends AbstractCollector
 
     public function collect(MvcEvent $mvcEvent)
     {
+        if (!isset($this->data)) {
+            return $this->data['cache-toolbar'] = [];
+        }
     }
 
     public function getCacheStats()
