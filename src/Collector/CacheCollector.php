@@ -39,6 +39,10 @@ class CacheCollector extends AbstractCollector
      */
     protected $cacheLogger = '\Doctrine\ORM\Cache\Logging\StatisticsCacheLogger';
 
+    /**
+     * @param MvcEvent $mvcEvent
+     * @return array
+     */
     public function collect(MvcEvent $mvcEvent)
     {
         if (!isset($this->data)) {
@@ -46,6 +50,11 @@ class CacheCollector extends AbstractCollector
         }
     }
 
+    /**
+     * Get cache stats
+     *
+     * @return array
+     */
     public function getCacheStats()
     {
         if (!$this->getEntityManager()) {
