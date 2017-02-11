@@ -36,6 +36,10 @@ class CacheCollector extends AbstractCollector
 
     public function collect(MvcEvent $mvcEvent)
     {
+        if (!$this->getEntityManager()) {
+            throw new \LogicException('Entity Manager must be set.');
+        }
+
     }
 
     /**

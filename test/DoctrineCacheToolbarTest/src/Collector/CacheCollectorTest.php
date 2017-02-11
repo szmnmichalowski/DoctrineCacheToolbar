@@ -10,9 +10,11 @@
 namespace DoctrineCacheToolbarTest\Collector;
 
 use PHPUnit\Framework\TestCase;
+use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Collector\AbstractCollector;
 use DoctrineCacheToolbar\Collector\CacheCollector;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Configuration;
 
 /**
  * Class CacheCollectorTest
@@ -65,10 +67,23 @@ class CacheCollectorTest extends TestCase
      */
     public function testEntityManagerAccessors()
     {
+        $this->assertTrue(method_exists($this->collector, 'setEntityManager'));
+        $this->assertTrue(method_exists($this->collector, 'getEntityManager'));
+
         $em = $this->prophesize(EntityManager::class);
         $this->collector->setEntityManager($em->reveal());
 
-        $this->assertTrue(method_exists($this->collector, 'getEntityManager'));
         $this->assertInstanceOf(EntityManager::class, $this->collector->getEntityManager());
+    }
+
+    /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::collect
+     */
+    public function testCollectMethodWhenEntityManagerIsNotSet()
+    {
+        $this->expectException(\LogicException::class);
+
+        $event = $this->prophesize(MvcEvent::class);
+        $this->collector->collect($event->reveal());
     }
 }
