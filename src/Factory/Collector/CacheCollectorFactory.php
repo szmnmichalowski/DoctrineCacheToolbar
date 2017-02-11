@@ -30,6 +30,7 @@ class CacheCollectorFactory implements FactoryInterface
     {
         $name = $name ? $name : CacheCollector::class;
         $class = new $name;
+        $class->setEntityManager($container->get('Doctrine\ORM\EntityManager'));
 
         return $class;
     }

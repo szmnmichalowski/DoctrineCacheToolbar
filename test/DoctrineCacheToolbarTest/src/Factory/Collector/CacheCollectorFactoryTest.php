@@ -9,6 +9,7 @@
 
 namespace DoctrineCacheToolbarTest\Factory\Collector;
 
+use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Interop\Container\ContainerInterface;
@@ -39,11 +40,17 @@ class CacheCollectorFactoryTest extends TestCase
      */
     public function testCanCreateService()
     {
+        $em = $this->prophesize(EntityManager::class);
         $serviceLocator = $this->prophesize(ServiceLocatorInterface::class);
+        $serviceLocator->get('Doctrine\ORM\EntityManager')
+            ->willReturn($em)
+            ->shouldBeCalled();
+
         $result = $this->factory->createService($serviceLocator->reveal());
 
         $this->assertTrue(is_object($result));
         $this->assertInstanceOf(CacheCollector::class, $result);
+        $this->assertInstanceOf(EntityManager::class, $result->getEntityManager());
     }
 
     /**
@@ -51,10 +58,16 @@ class CacheCollectorFactoryTest extends TestCase
      */
     public function testCanInvokeFactory()
     {
+        $em = $this->prophesize(EntityManager::class);
         $container = $this->prophesize(ContainerInterface::class);
+        $container->get('Doctrine\ORM\EntityManager')
+            ->willReturn($em)
+            ->shouldBeCalled();
+
         $result = $this->factory->__invoke($container->reveal());
 
         $this->assertTrue(is_object($result));
         $this->assertInstanceOf(CacheCollector::class, $result);
+        $this->assertInstanceOf(EntityManager::class, $result->getEntityManager());
     }
 }
