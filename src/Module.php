@@ -23,7 +23,7 @@ class Module implements ConfigProviderInterface, DependencyIndicatorInterface
      */
     public function getConfig()
     {
-        include __DIR__.'/../config/module.config.php';
+        return include __DIR__.'/../config/module.config.php';
     }
 
     /**
