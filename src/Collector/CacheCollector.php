@@ -34,6 +34,11 @@ class CacheCollector extends AbstractCollector
      */
     protected $entityManager;
 
+    /**
+     * @var string
+     */
+    protected $cacheLogger = '\Doctrine\ORM\Cache\Logging\StatisticsCacheLogger';
+
     public function collect(MvcEvent $mvcEvent)
     {
         if (!$this->getEntityManager()) {
@@ -72,5 +77,21 @@ class CacheCollector extends AbstractCollector
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheLogger()
+    {
+        return $this->cacheLogger;
+    }
+
+    /**
+     * @param string $cacheLogger
+     */
+    public function setCacheLogger($cacheLogger)
+    {
+        $this->cacheLogger = $cacheLogger;
     }
 }

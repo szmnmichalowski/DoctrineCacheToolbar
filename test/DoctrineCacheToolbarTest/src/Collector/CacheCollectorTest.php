@@ -77,6 +77,21 @@ class CacheCollectorTest extends TestCase
     }
 
     /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::setCacheLogger
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheLogger
+     */
+    public function testCacheLoggerAccessors()
+    {
+        $this->assertTrue(method_exists($this->collector, 'setCacheLogger'));
+        $this->assertTrue(method_exists($this->collector, 'getCacheLogger'));
+
+        $cacheLogger = 'test';
+        $this->collector->setCacheLogger($cacheLogger);
+
+        $this->assertInstanceOf($cacheLogger, $this->collector->getCacheLogger());
+    }
+
+    /**
      * @covers DoctrineCacheToolbar\Collector\CacheCollector::collect
      */
     public function testCollectMethodWhenEntityManagerIsNotSet()
