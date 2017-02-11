@@ -17,7 +17,8 @@ return [
     ],
     'view_manager' => [
         'template_map' => [
-        ],
+            'zend-developer-tools/toolbar/cache-data' => __DIR__.'/../view/zend-developer-tools/toolbar/cache-data.phtml',
+        ]
     ],
     'zenddevelopertools' => [
         'profiler' => [
