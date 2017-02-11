@@ -9,6 +9,7 @@
 
 namespace DoctrineCacheToolbar\Collector;
 
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Collector\AbstractCollector;
 
@@ -28,6 +29,11 @@ class CacheCollector extends AbstractCollector
      */
     protected $priority = 15;
 
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
     public function collect(MvcEvent $mvcEvent)
     {
     }
@@ -46,5 +52,21 @@ class CacheCollector extends AbstractCollector
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
     }
 }

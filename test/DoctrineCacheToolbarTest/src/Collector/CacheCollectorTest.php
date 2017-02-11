@@ -12,6 +12,7 @@ namespace DoctrineCacheToolbarTest\Collector;
 use PHPUnit\Framework\TestCase;
 use ZendDeveloperTools\Collector\AbstractCollector;
 use DoctrineCacheToolbar\Collector\CacheCollector;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Class CacheCollectorTest
@@ -45,6 +46,7 @@ class CacheCollectorTest extends TestCase
      */
     public function testNameGetter()
     {
+        $this->assertTrue(method_exists($this->collector, 'getName'));
         $this->assertEquals('cache.toolbar', $this->collector->getName());
     }
 
@@ -53,6 +55,20 @@ class CacheCollectorTest extends TestCase
      */
     public function testPriorityGetter()
     {
+        $this->assertTrue(method_exists($this->collector, 'getPriority'));
         $this->assertEquals(15, $this->collector->getPriority());
+    }
+
+    /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::setEntityManager
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getEntityManager
+     */
+    public function testEntityManagerAccessors()
+    {
+        $em = $this->prophesize(EntityManager::class);
+        $this->collector->setEntityManager($em->reveal());
+
+        $this->assertTrue(method_exists($this->collector, 'getEntityManager'));
+        $this->assertInstanceOf(EntityManager::class, $this->collector->getEntityManager());
     }
 }
