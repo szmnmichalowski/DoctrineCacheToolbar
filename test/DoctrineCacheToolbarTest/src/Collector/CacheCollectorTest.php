@@ -79,21 +79,6 @@ class CacheCollectorTest extends TestCase
     }
 
     /**
-     * @covers DoctrineCacheToolbar\Collector\CacheCollector::setCacheLogger
-     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheLogger
-     */
-    public function testCacheLoggerAccessors()
-    {
-        $this->assertTrue(method_exists($this->collector, 'setCacheLogger'));
-        $this->assertTrue(method_exists($this->collector, 'getCacheLogger'));
-
-        $cacheLogger = 'test';
-        $this->collector->setCacheLogger($cacheLogger);
-
-        $this->assertEquals($cacheLogger, $this->collector->getCacheLogger());
-    }
-
-    /**
      * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheStats
      */
     public function testGetCacheStatsWhenWhenEntityManagerIsNotSet()
@@ -145,10 +130,11 @@ class CacheCollectorTest extends TestCase
     }
 
     /**
-     * @covers  DoctrineCacheToolbar\Collector\CacheCollector::collect
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::collect
      */
     public function testCollect()
     {
         $this->assertTrue(is_array($this->collector->collect(new MvcEvent())));
+        $this->collector->collect(new MvcEvent());
     }
 }
