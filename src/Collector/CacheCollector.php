@@ -12,12 +12,13 @@ namespace DoctrineCacheToolbar\Collector;
 use Doctrine\ORM\EntityManager;
 use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Collector\AbstractCollector;
+use ZendDeveloperTools\Collector\AutoHideInterface;
 
 /**
  * Class CacheCollector
  * @package DoctrineCacheToolbar\Collector
  */
-class CacheCollector extends AbstractCollector
+class CacheCollector extends AbstractCollector implements AutoHideInterface
 {
     /**
      * @var string
@@ -43,6 +44,27 @@ class CacheCollector extends AbstractCollector
         if (!isset($this->data)) {
             return $this->data['cache-toolbar'] = [];
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return bool
+     */
+    public function canHide()
+    {
+        if (!$this->getEntityManager()) {
+            return true;
+        }
+
+        $isCacheEnabled = $this->getEntityManager()
+            ->getConfiguration()
+            ->isSecondLevelCacheEnabled();
+
+        if (!$isCacheEnabled || empty($this->data)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

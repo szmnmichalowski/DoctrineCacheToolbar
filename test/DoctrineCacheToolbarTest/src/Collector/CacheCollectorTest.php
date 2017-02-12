@@ -17,6 +17,7 @@ use ZendDeveloperTools\Collector\AbstractCollector;
 use DoctrineCacheToolbar\Collector\CacheCollector;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Configuration;
+use ZendDeveloperTools\Collector\AutoHideInterface;
 
 /**
  * Class CacheCollectorTest
@@ -43,6 +44,7 @@ class CacheCollectorTest extends TestCase
     public function testClassImplementsProperInterfaces()
     {
         $this->assertInstanceOf(AbstractCollector::class, $this->collector);
+        $this->assertInstanceOf(AutoHideInterface::class, $this->collector);
     }
 
     /**
@@ -146,5 +148,47 @@ class CacheCollectorTest extends TestCase
     {
         $this->assertTrue(is_array($this->collector->collect(new MvcEvent())));
         $this->collector->collect(new MvcEvent());
+    }
+
+    /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::canHide
+     */
+    public function testCanHide()
+    {
+        $this->assertTrue(method_exists($this->collector, 'canHide'));
+
+        // Entity manager is not set
+        $this->assertTrue($this->collector->canHide());
+
+        // Entity manager is set but second level cache is disabled
+        $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(false)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+        $this->collector->setEntityManager($em->reveal());
+
+        $this->assertTrue($this->collector->canHide());
+
+        $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(true)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+
+        $reflection = new \ReflectionClass($this->collector);
+        $property = $reflection->getProperty('data');
+        $property->setAccessible(true);
+        $property->setValue($this->collector, ['test']);
+
+        $this->collector->setEntityManager($em->reveal());
+
+        $this->assertFalse($this->collector->canHide());
     }
 }
