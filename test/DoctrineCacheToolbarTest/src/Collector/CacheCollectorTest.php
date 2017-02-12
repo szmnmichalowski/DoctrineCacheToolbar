@@ -119,6 +119,18 @@ class CacheCollectorTest extends TestCase
             ->willReturn($cacheLogger)
             ->shouldBeCalled();
         $config = $this->prophesize(Configuration::class);
+        $config->getMetadataCacheImpl()
+            ->willReturn(null)
+            ->shouldBeCalled();
+        $config->getQueryCacheImpl()
+            ->willReturn(null)
+            ->shouldBeCalled();
+        $config->getResultCacheImpl()
+            ->willReturn(null)
+            ->shouldBeCalled();
+        $config->getHydrationCacheImpl()
+            ->willReturn(null)
+            ->shouldBeCalled();
         $config->isSecondLevelCacheEnabled()
             ->willReturn(true)
             ->shouldBeCalled();
@@ -160,6 +172,33 @@ class CacheCollectorTest extends TestCase
 
         $this->collector->setEntityManager($em->reveal());
         $this->assertEquals(null, $this->collector->getCacheStats());
+    }
+
+    /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheStats
+     */
+    public function testGetCacheStatsWhenCacheLoggerIsNotSet()
+    {
+        $this->expectException(\LogicException::class);
+
+        $cacheConfig = $this->prophesize(CacheConfiguration::class);
+        $cacheConfig->getCacheLogger()
+            ->willReturn(null)
+            ->shouldBeCalled();
+        $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(true)
+            ->shouldBeCalled();
+        $config->getSecondLevelCacheConfiguration()
+            ->willReturn($cacheConfig)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+
+        $this->collector->setEntityManager($em->reveal());
+        $this->collector->getCacheStats();
     }
 
     /**

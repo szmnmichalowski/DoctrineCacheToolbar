@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Collector\AbstractCollector;
 use ZendDeveloperTools\Collector\AutoHideInterface;
+use Doctrine\Common\Cache\ArrayCache;
 
 /**
  * Class CacheCollector
@@ -87,6 +88,27 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
         $logger = $config->getSecondLevelCacheConfiguration()
             ->getCacheLogger();
 
+        if (null === $logger) {
+            throw new \LogicException('Cache logger must be set.');
+        }
+
+        $info = [
+            'info' => [
+                'metadata_adapter'    => is_object($config->getMetadataCacheImpl())
+                    ? $config->getMetadataCacheImpl()
+                    : 'NA',
+                'query_adapter'       => is_object($config->getQueryCacheImpl())
+                    ? $config->getQueryCacheImpl()
+                    : 'NA',
+                'result_adapter'      => is_object($config->getResultCacheImpl())
+                    ? $config->getResultCacheImpl()
+                    : 'NA',
+                'hydration_adapter'   => is_object($config->getHydrationCacheImpl())
+                    ? $config->getHydrationCacheImpl()
+                    : 'NA',
+            ]
+        ];
+
         $total = [
             'total' => [
                 'put' => $logger->getPutCount(),
@@ -103,7 +125,7 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
             ]
         ];
 
-        $this->data['cache-toolbar'] = array_merge($total, $regions);
+        $this->data['cache-toolbar'] = array_merge($info, $total, $regions);
         return $this->data;
     }
 
