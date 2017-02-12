@@ -119,6 +119,9 @@ class CacheCollectorTest extends TestCase
             ->willReturn($cacheLogger)
             ->shouldBeCalled();
         $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(true)
+            ->shouldBeCalled();
         $config->getSecondLevelCacheConfiguration()
             ->willReturn($cacheConfig)
             ->shouldBeCalled();
@@ -139,6 +142,24 @@ class CacheCollectorTest extends TestCase
         $this->assertEquals(0, $data['cache-toolbar']['total']['put']);
         $this->assertEquals(0, $data['cache-toolbar']['total']['hit']);
         $this->assertEquals(0, $data['cache-toolbar']['total']['miss']);
+    }
+
+    /**
+     * @covers DoctrineCacheToolbar\Collector\CacheCollector::getCacheStats
+     */
+    public function testGetCacheStatsWhenCacheIsDisabled()
+    {
+        $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(false)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+
+        $this->collector->setEntityManager($em->reveal());
+        $this->assertEquals(null, $this->collector->getCacheStats());
     }
 
     /**
