@@ -43,7 +43,7 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
     public function collect(MvcEvent $mvcEvent)
     {
         if (!isset($this->data)) {
-            return $this->data['cache-toolbar'] = [];
+            return $this->data = [];
         }
     }
 
@@ -125,7 +125,7 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
             ]
         ];
 
-        $this->data['cache-toolbar'] = array_merge($info, $total, $regions);
+        $this->data = array_merge($info, $total, $regions);
         return $this->data;
     }
 

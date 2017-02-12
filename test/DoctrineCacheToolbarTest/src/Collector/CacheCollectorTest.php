@@ -145,15 +145,14 @@ class CacheCollectorTest extends TestCase
         $this->collector->setEntityManager($em->reveal());
 
         $data = $this->collector->getCacheStats();
-        $this->assertArrayHasKey('cache-toolbar', $data);
-        $this->assertArrayHasKey('total', $data['cache-toolbar']);
-        $this->assertArrayHasKey('regions', $data['cache-toolbar']);
-        $this->assertArrayHasKey('put', $data['cache-toolbar']['total']);
-        $this->assertArrayHasKey('hit', $data['cache-toolbar']['total']);
-        $this->assertArrayHasKey('miss', $data['cache-toolbar']['total']);
-        $this->assertEquals(0, $data['cache-toolbar']['total']['put']);
-        $this->assertEquals(0, $data['cache-toolbar']['total']['hit']);
-        $this->assertEquals(0, $data['cache-toolbar']['total']['miss']);
+        $this->assertArrayHasKey('total', $data);
+        $this->assertArrayHasKey('regions', $data);
+        $this->assertArrayHasKey('put', $data['total']);
+        $this->assertArrayHasKey('hit', $data['total']);
+        $this->assertArrayHasKey('miss', $data['total']);
+        $this->assertEquals(0, $data['total']['put']);
+        $this->assertEquals(0, $data['total']['hit']);
+        $this->assertEquals(0, $data['total']['miss']);
     }
 
     /**
