@@ -147,12 +147,17 @@ class CacheCollectorTest extends TestCase
         $data = $this->collector->getCacheStats();
         $this->assertArrayHasKey('total', $data);
         $this->assertArrayHasKey('regions', $data);
+        $this->assertArrayHasKey('info', $data);
         $this->assertArrayHasKey('put', $data['total']);
         $this->assertArrayHasKey('hit', $data['total']);
         $this->assertArrayHasKey('miss', $data['total']);
         $this->assertEquals(0, $data['total']['put']);
         $this->assertEquals(0, $data['total']['hit']);
         $this->assertEquals(0, $data['total']['miss']);
+        $this->assertEquals('NA', $data['info']['metadata_adapter']);
+        $this->assertEquals('NA', $data['info']['query_adapter']);
+        $this->assertEquals('NA', $data['info']['result_adapter']);
+        $this->assertEquals('NA', $data['info']['hydration_adapter']);
     }
 
     /**
