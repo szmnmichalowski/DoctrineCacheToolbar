@@ -12,7 +12,9 @@ namespace DoctrineCacheToolbar;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 use Zend\ModuleManager\ModuleManager;
+use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Doctrine\ORM\Cache\Logging\StatisticsCacheLogger;
 
 /**
  * Class Module
@@ -21,13 +23,13 @@ use Zend\Mvc\MvcEvent;
 class Module implements ConfigProviderInterface, DependencyIndicatorInterface
 {
     /**
-     * @param ModuleManager $manager
+     * @param MvcEvent $event
      */
-    public function init(ModuleManager $manager)
+    public function onBootstrap(MvcEvent $event)
     {
-        $eventManager = $manager->getEventManager();
-        $sharedEventManager = $eventManager->getSharedManager();
-        $sharedEventManager->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH,
+        $app = $event->getApplication();
+        $sharedEventManager = $app->getEventManager();
+        $sharedEventManager->attach(MvcEvent::EVENT_DISPATCH,
             [$this, 'addCacheLogger'], 100);
     }
 
@@ -39,7 +41,7 @@ class Module implements ConfigProviderInterface, DependencyIndicatorInterface
     {
         $app = $event->getApplication();
         $em = $app->getServiceManager()->get('Doctrine\ORM\EntityManager');
-        $logger = new \Doctrine\ORM\Cache\Logging\StatisticsCacheLogger();
+        $logger = new StatisticsCacheLogger();
         $config = $em->getConfiguration();
         $config->getSecondLevelCacheConfiguration()
             ->setCacheLogger($logger);

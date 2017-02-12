@@ -42,28 +42,27 @@ class ModuleTest extends TestCase
     }
 
     /**
-     * @covers DoctrineCacheToolbar\Module::init
+     * @covers DoctrineCacheToolbar\Module::onBootstrap
      */
-    public function testInit()
+    public function testOnBootstrap()
     {
-        $this->assertTrue(method_exists($this->module, 'init'));
+        $this->assertTrue(method_exists($this->module, 'onBootstrap'));
 
-        $sharedEventManager = $this->prophesize(SharedEventManager::class);
-        $sharedEventManager->attach('DoctrineCacheToolbar',
-            MvcEvent::EVENT_DISPATCH,
+        $eventManager = $this->prophesize(EventManager::class);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH,
             [$this->module, 'addCacheLogger'],
             100)
             ->shouldBeCalled();
-        $eventManager = $this->prophesize(EventManager::class);
-        $eventManager->getSharedManager()
-            ->willReturn($sharedEventManager)
-            ->shouldBeCalled();
-        $manager = $this->prophesize(ModuleManager::class);
-        $manager->getEventManager()
+        $application = $this->prophesize(Application::class);
+        $application->getEventManager()
             ->willReturn($eventManager)
             ->shouldBeCalled();
+        $mvcEvent = $this->prophesize(MvcEvent::class);
+        $mvcEvent->getApplication()
+            ->willReturn($application)
+            ->shouldBeCalled();
 
-        $this->module->init($manager->reveal());
+        $this->module->onBootstrap($mvcEvent->reveal());
     }
 
     /**
