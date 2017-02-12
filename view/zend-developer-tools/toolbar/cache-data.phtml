@@ -1,22 +1,73 @@
-<div class="zdt-toolbar-entry">
-    <div class="zdt-toolbar-preview">
-        <img src="" />
-        <span class="zdt-toolbar-info">Cache Data</span>
-    </div>
-    <div class="zdt-toolbar-detail zdt-toolbar-detail-overflow">
-        <span class="zdt-toolbar-info zdt-toolbar-info-heading">
-            <a href="#" target="_blank">
-                DoctrineCacheToolbar
-            </a>
-        </span>
-        <div class="zdt-toolbar-info">
-            <?php $data = $collector->getCacheStats(); ?>
-            <span class="zdt-detail-label">Total</span>
-            <div class="zdt-detail-context">
-                <strong>Put: </strong><?php echo $data['cache-toolbar']['total']['put']; ?> <br>
-                <strong>Hit: </strong><?php echo $data['cache-toolbar']['total']['hit']; ?> <br>
-                <strong>Miss: </strong><?php echo $data['cache-toolbar']['total']['miss']; ?> <br>
+<?php if (!$collector->canHide()): ?>
+    <?php $data = $collector->getCacheStats(); ?>
+    <div class="zdt-toolbar-entry">
+        <div class="zdt-toolbar-preview">
+            <img src="" />
+            <span class="zdt-toolbar-info">Cache Data</span>
+        </div>
+        <div class="zdt-toolbar-detail zdt-toolbar-detail-overflow">
+            <span class="zdt-toolbar-info zdt-toolbar-info-heading">
+                <a href="#" target="_blank">
+                    DoctrineCacheToolbar
+                </a>
+            </span>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Metadate cache</span>
+                <div class="zdt-detail-context">
+                    <strong><?php echo $data['info']['metadata_adapter']; ?></strong>
+                </div>
+            </div>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Query cache</span>
+                <div class="zdt-detail-context">
+                    <strong><?php echo $data['info']['query_adapter']; ?></strong>
+                </div>
+            </div>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Result cache</span>
+                <div class="zdt-detail-context">
+                    <strong><?php echo $data['info']['hydration_adapter']; ?></strong>
+                </div>
+            </div>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Hydration cache</span>
+                <div class="zdt-detail-context">
+                    <strong><?php echo $data['info']['hydration_adapter']; ?></strong>
+                </div>
+            </div>
+            <hr>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Region's statistics</span>
+                <div class="zdt-detail-context">
+                    <strong>Put: </strong><?php echo $data['total']['put']; ?> <br>
+                    <strong>Hit: </strong><?php echo $data['total']['hit']; ?> <br>
+                    <strong>Miss: </strong><?php echo $data['total']['miss']; ?> <br>
+                </div>
+            </div>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Put</span>
+                <div class="zdt-detail-context">
+                    <?php foreach ($data['regions']['put'] as $region => $value): ?>
+                        <?php echo $region; ?> <?php echo $value; ?> <br>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Hit</span>
+                <div class="zdt-detail-context">
+                    <?php foreach ($data['regions']['hit'] as $region => $value): ?>
+                        <?php echo $region; ?> <?php echo $value; ?> <br>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="zdt-toolbar-info">
+                <span class="zdt-detail-label">Miss</span>
+                <div class="zdt-detail-context">
+                    <?php foreach ($data['regions']['miss'] as $region => $value): ?>
+                        <?php echo $region; ?> <?php echo $value; ?> <br>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     </div>
-</div>
+<?php endif; ?>
