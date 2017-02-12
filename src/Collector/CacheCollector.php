@@ -61,16 +61,14 @@ class CacheCollector extends AbstractCollector
             throw new \LogicException('Entity Manager must be set.');
         }
 
-        /* @var \Doctrine\ORM\Cache\Logging\StatisticsCacheLogger $logger */
-        $logger = new $this->cacheLogger;
         $config = $this->getEntityManager()->getConfiguration();
-        $config->getSecondLevelCacheConfiguration()
-            ->setCacheLogger($logger);
+        $logger = $config->getSecondLevelCacheConfiguration()
+            ->getCacheLogger();
 
         $this->data['cache-toolbar']['total'] = [
             'put' => $logger->getPutCount(),
-            'hit' => $logger->getPutCount(),
-            'miss' => $logger->getPutCount(),
+            'hit' => $logger->getHitCount(),
+            'miss' => $logger->getMissCount(),
         ];
         return $this->data;
     }
