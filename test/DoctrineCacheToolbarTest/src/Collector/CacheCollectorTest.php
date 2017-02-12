@@ -103,6 +103,15 @@ class CacheCollectorTest extends TestCase
         $cacheLogger->getMissCount()
             ->willReturn(0)
             ->shouldBeCalled();
+        $cacheLogger->getRegionsPut()
+            ->willReturn(['test_region' => 0])
+            ->shouldBeCalled();
+        $cacheLogger->getRegionsHit()
+            ->willReturn(['test_region' => 0])
+            ->shouldBeCalled();
+        $cacheLogger->getRegionsMiss()
+            ->willReturn(['test_region' => 0])
+            ->shouldBeCalled();
         $cacheConfig = $this->prophesize(CacheConfiguration::class);
         $cacheConfig->getCacheLogger()
             ->willReturn($cacheLogger)
@@ -121,6 +130,7 @@ class CacheCollectorTest extends TestCase
         $data = $this->collector->getCacheStats();
         $this->assertArrayHasKey('cache-toolbar', $data);
         $this->assertArrayHasKey('total', $data['cache-toolbar']);
+        $this->assertArrayHasKey('regions', $data['cache-toolbar']);
         $this->assertArrayHasKey('put', $data['cache-toolbar']['total']);
         $this->assertArrayHasKey('hit', $data['cache-toolbar']['total']);
         $this->assertArrayHasKey('miss', $data['cache-toolbar']['total']);

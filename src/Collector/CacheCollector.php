@@ -60,11 +60,23 @@ class CacheCollector extends AbstractCollector
         $logger = $config->getSecondLevelCacheConfiguration()
             ->getCacheLogger();
 
-        $this->data['cache-toolbar']['total'] = [
-            'put' => $logger->getPutCount(),
-            'hit' => $logger->getHitCount(),
-            'miss' => $logger->getMissCount(),
+        $total = [
+            'total' => [
+                'put' => $logger->getPutCount(),
+                'hit' => $logger->getHitCount(),
+                'miss' => $logger->getMissCount(),
+            ]
         ];
+
+        $regions = [
+            'regions' => [
+                'put' => $logger->getRegionsPut(),
+                'hit' => $logger->getRegionsHit(),
+                'miss' => $logger->getRegionsMiss(),
+            ]
+        ];
+
+        $this->data['cache-toolbar'] = array_merge($total, $regions);
         return $this->data;
     }
 
