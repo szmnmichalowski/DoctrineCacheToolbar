@@ -60,7 +60,7 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
             ->getConfiguration()
             ->isSecondLevelCacheEnabled();
 
-        if (!$isCacheEnabled || empty($this->data)) {
+        if (!$isCacheEnabled) {
             return true;
         }
 
