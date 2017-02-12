@@ -6,10 +6,12 @@
     <div class="zdt-toolbar-detail zdt-toolbar-detail-overflow">
         <div class="zdt-toolbar-info">
             <?php $data = $collector->getCacheStats(); ?>
-            <p>Total:</p>
-            <span><?php echo $data['cache-toolbar']['total']['put']; ?></span>
-            <span><?php echo $data['cache-toolbar']['total']['hit']; ?></span>
-            <span><?php echo $data['cache-toolbar']['total']['miss']; ?></span>
+            <span class="zdt-detail-label">Total</span>
+            <div class="zdt-detail-context">
+                <strong>Put: </strong><?php echo $data['cache-toolbar']['total']['put']; ?> <br>
+                <strong>Hit: </strong><?php echo $data['cache-toolbar']['total']['hit']; ?> <br>
+                <strong>Miss: </strong><?php echo $data['cache-toolbar']['total']['miss']; ?> <br>
+            </div>
         </div>
     </div>
 </div>
