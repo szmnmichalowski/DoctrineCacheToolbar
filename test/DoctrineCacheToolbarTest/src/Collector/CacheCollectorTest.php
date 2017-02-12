@@ -18,6 +18,7 @@ use DoctrineCacheToolbar\Collector\CacheCollector;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Configuration;
 use ZendDeveloperTools\Collector\AutoHideInterface;
+use Doctrine\Common\Cache\FilesystemCache;
 
 /**
  * Class CacheCollectorTest
@@ -95,6 +96,7 @@ class CacheCollectorTest extends TestCase
      */
     public function testGetCacheStatsWhenEntityManagerIsSet()
     {
+        $cacheAdapter = $this->prophesize(FilesystemCache::class);
         $cacheLogger = $this->prophesize(StatisticsCacheLogger::class);
         $cacheLogger->getPutCount()
             ->willReturn(0)
@@ -120,16 +122,16 @@ class CacheCollectorTest extends TestCase
             ->shouldBeCalled();
         $config = $this->prophesize(Configuration::class);
         $config->getMetadataCacheImpl()
-            ->willReturn(null)
+            ->willReturn($cacheAdapter)
             ->shouldBeCalled();
         $config->getQueryCacheImpl()
-            ->willReturn(null)
+            ->willReturn($cacheAdapter)
             ->shouldBeCalled();
         $config->getResultCacheImpl()
-            ->willReturn(null)
+            ->willReturn($cacheAdapter)
             ->shouldBeCalled();
         $config->getHydrationCacheImpl()
-            ->willReturn(null)
+            ->willReturn($cacheAdapter)
             ->shouldBeCalled();
         $config->isSecondLevelCacheEnabled()
             ->willReturn(true)
@@ -154,10 +156,10 @@ class CacheCollectorTest extends TestCase
         $this->assertEquals(0, $data['total']['put']);
         $this->assertEquals(0, $data['total']['hit']);
         $this->assertEquals(0, $data['total']['miss']);
-        $this->assertEquals('NA', $data['info']['metadata_adapter']);
-        $this->assertEquals('NA', $data['info']['query_adapter']);
-        $this->assertEquals('NA', $data['info']['result_adapter']);
-        $this->assertEquals('NA', $data['info']['hydration_adapter']);
+        $this->assertTrue(is_string($data['info']['metadata_adapter']));
+        $this->assertTrue(is_string($data['info']['query_adapter']));
+        $this->assertTrue(is_string($data['info']['result_adapter']));
+        $this->assertTrue(is_string($data['info']['hydration_adapter']));
     }
 
     /**

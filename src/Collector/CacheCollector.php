@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManager;
 use Zend\Mvc\MvcEvent;
 use ZendDeveloperTools\Collector\AbstractCollector;
 use ZendDeveloperTools\Collector\AutoHideInterface;
-use Doctrine\Common\Cache\ArrayCache;
 
 /**
  * Class CacheCollector
@@ -95,20 +94,19 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
         $info = [
             'info' => [
                 'metadata_adapter'    => is_object($config->getMetadataCacheImpl())
-                    ? $config->getMetadataCacheImpl()
+                    ? get_class($config->getMetadataCacheImpl())
                     : 'NA',
                 'query_adapter'       => is_object($config->getQueryCacheImpl())
-                    ? $config->getQueryCacheImpl()
+                    ? get_class($config->getQueryCacheImpl())
                     : 'NA',
                 'result_adapter'      => is_object($config->getResultCacheImpl())
-                    ? $config->getResultCacheImpl()
+                    ? get_class($config->getResultCacheImpl())
                     : 'NA',
                 'hydration_adapter'   => is_object($config->getHydrationCacheImpl())
-                    ? $config->getHydrationCacheImpl()
+                    ? get_class($config->getHydrationCacheImpl())
                     : 'NA',
             ]
         ];
-
         $total = [
             'total' => [
                 'put' => $logger->getPutCount(),
@@ -116,12 +114,11 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
                 'miss' => $logger->getMissCount(),
             ]
         ];
-
         $regions = [
             'regions' => [
-                'put' => $logger->getRegionsPut(),
-                'hit' => $logger->getRegionsHit(),
-                'miss' => $logger->getRegionsMiss(),
+                'put' => $logger->getRegionsPut() ?: ['None' => null],
+                'hit' => $logger->getRegionsHit() ?: ['None' => null],
+                'miss' => $logger->getRegionsMiss() ?: ['None' => null],
             ]
         ];
 
