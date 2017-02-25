@@ -1,5 +1,5 @@
 {
-    "name": "szmnmichalowski/zf2-doctrinecachetoolbar",
+    "name": "szmnmichalowski/doctrine-cache-toolbar",
     "description": "Statistics for Second Level Cache shown on ZendDeveloperTools",
     "type": "library",
     "license": "MIT",
