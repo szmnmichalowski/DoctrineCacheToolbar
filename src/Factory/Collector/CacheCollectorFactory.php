@@ -22,7 +22,7 @@
 namespace DoctrineCacheToolbar\Factory\Collector;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use DoctrineCacheToolbar\Collector\CacheCollector;
 
