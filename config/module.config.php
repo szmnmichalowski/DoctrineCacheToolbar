@@ -18,19 +18,21 @@
  * module.config.php
  * @data:       2017-02-08 19:36
  */
-
-use DoctrineCacheToolbar\Factory\Collector\CacheCollectorFactory;
+namespace DoctrineCacheToolbar;
 
 return [
     'service_manager' => [
+        'aliases' => [
+            'cache.toolbar' => Collector\CacheCollector::class,
+        ],
         'factories' => [
-            'cache.toolbar' => CacheCollectorFactory::class
+            Collector\CacheCollector::class => Factory\Collector\CacheCollectorFactory::class,
         ],
     ],
     'view_manager' => [
         'template_map' => [
             'zend-developer-tools/toolbar/cache-data' => __DIR__.'/../view/zend-developer-tools/toolbar/cache-data.phtml',
-        ]
+        ],
     ],
     'zenddevelopertools' => [
         'profiler' => [
@@ -45,3 +47,4 @@ return [
         ],
     ],
 ];
+
