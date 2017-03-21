@@ -73,6 +73,6 @@ class Module implements ConfigProviderInterface, DependencyIndicatorInterface
      */
     public function getModuleDependencies()
     {
-        return ['ZendDeveloperTools'];
+        return ['ZendDeveloperTools', 'DoctrineORMModule'];
     }
 }
