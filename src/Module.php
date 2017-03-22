@@ -52,10 +52,13 @@ class Module implements ConfigProviderInterface, DependencyIndicatorInterface
     {
         $app = $event->getApplication();
         $em = $app->getServiceManager()->get('Doctrine\ORM\EntityManager');
-        $logger = new StatisticsCacheLogger();
         $config = $em->getConfiguration();
-        $config->getSecondLevelCacheConfiguration()
-            ->setCacheLogger($logger);
+
+        if ($config->isSecondLevelCacheEnabled()) {
+            $logger = new StatisticsCacheLogger();
+            $config->getSecondLevelCacheConfiguration()
+                ->setCacheLogger($logger);
+        }
 
         return $event;
     }
@@ -73,6 +76,6 @@ class Module implements ConfigProviderInterface, DependencyIndicatorInterface
      */
     public function getModuleDependencies()
     {
-        return ['ZendDeveloperTools'];
+        return ['ZendDeveloperTools', 'DoctrineORMModule'];
     }
 }

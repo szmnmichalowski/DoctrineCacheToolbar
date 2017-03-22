@@ -80,6 +80,9 @@ class ModuleTest extends TestCase
         $config->getSecondLevelCacheConfiguration()
             ->willReturn($cacheConfig)
             ->shouldBeCalled();
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(true)
+            ->shouldBeCalled();
         $em = $this->prophesize(EntityManager::class);
         $em->getConfiguration()
             ->willReturn($config)
@@ -114,6 +117,6 @@ class ModuleTest extends TestCase
     public function testGetModuleDependencies()
     {
         $this->assertTrue(is_array($this->module->getModuleDependencies()));
-        $this->assertEquals(['ZendDeveloperTools'], $this->module->getModuleDependencies());
+        $this->assertEquals(['ZendDeveloperTools', 'DoctrineORMModule'], $this->module->getModuleDependencies());
     }
 }

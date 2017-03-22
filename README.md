@@ -1,11 +1,13 @@
-##DoctrineCacheToolbar
+## DoctrineCacheToolbar
+
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 DoctrineCacheToolbar is a [Zend Framework 2/3](http://framework.zend.com/) module which is integrated with [Doctrine 2](http://www.doctrine-project.org/).<br/>
 It does show statistics for regions while [Second Level Cache](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/second-level-cache.html) is enabled in doctrine's configuration    
 
 ![Statistics in DoctrineCacheToolbar](http://i.imgur.com/Vu5trCG.png)
 
-###Installation
+### Installation
 
 You can install this module by cloning this project into your **./vendor/** directory, or using composer, which is more recommended:<br/>
 **1.**
@@ -34,14 +36,14 @@ return array(
 );
 ```
 
-###Usage
+### Usage
 
 This module does NOT need any configuration to work. It will show statistics for cache regions if you have [Second Level Cache](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/second-level-cache.html) enabled.
 
-###What is a Second Level Cache?
+### What is a Second Level Cache?
 Second Level Cache is a Doctrine's feature added in version 2.5. It allows to cache entity with their associations. More information you can find on Doctrine's website [http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/second-level-cache.html](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/second-level-cache.html)
 
-###How to configure Second Level Cache in Zend Framework 2/3?
+### How to configure Second Level Cache in Zend Framework 2/3?
 
 Add following code to Doctrine's configuration file:
 
