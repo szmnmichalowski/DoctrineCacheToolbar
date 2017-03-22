@@ -1,5 +1,7 @@
 ## DoctrineCacheToolbar
 
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+
 DoctrineCacheToolbar is a [Zend Framework 2/3](http://framework.zend.com/) module which is integrated with [Doctrine 2](http://www.doctrine-project.org/).<br/>
 It does show statistics for regions while [Second Level Cache](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/second-level-cache.html) is enabled in doctrine's configuration    
 
