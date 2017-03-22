@@ -22,6 +22,8 @@
         "doctrine/doctrine-orm-module": "1.1.1"
     },
     "require-dev": {
+        "container-interop/container-interop": "^1.1",
+        "zendframework/zend-test": "^2.5",
         "zendframework/zend-developer-tools": "^1.0.0 || ^1.1.0"
     },
     "autoload": {
