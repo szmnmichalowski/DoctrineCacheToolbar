@@ -1,7 +1,7 @@
 ## DoctrineCacheToolbar
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://travis-ci.org/szmnmichalowski/DoctrineCacheToolbar.svg?branch=master)] (https://travis-ci.org/szmnmichalowski/DoctrineCacheToolbar)
+[![Build Status](https://travis-ci.org/szmnmichalowski/DoctrineCacheToolbar.svg?branch=master)](https://travis-ci.org/szmnmichalowski/DoctrineCacheToolbar)
 [![Code Coverage](https://scrutinizer-ci.com/g/szmnmichalowski/DoctrineCacheToolbar/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/szmnmichalowski/DoctrineCacheToolbar/?branch=master)
 
 DoctrineCacheToolbar is a [Zend Framework 2/3](http://framework.zend.com/) module which is integrated with [Doctrine 2](http://www.doctrine-project.org/).<br/>
