@@ -1,6 +1,8 @@
 ## DoctrineCacheToolbar
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Build Status](https://travis-ci.org/szmnmichalowski/DoctrineCacheToolbar.svg?branch=master)] (https://travis-ci.org/szmnmichalowski/DoctrineCacheToolbar)
+[![Code Coverage](https://scrutinizer-ci.com/g/szmnmichalowski/DoctrineCacheToolbar/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/szmnmichalowski/DoctrineCacheToolbar/?branch=master)
 
 DoctrineCacheToolbar is a [Zend Framework 2/3](http://framework.zend.com/) module which is integrated with [Doctrine 2](http://www.doctrine-project.org/).<br/>
 It does show statistics for regions while [Second Level Cache](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/second-level-cache.html) is enabled in doctrine's configuration    
@@ -99,4 +101,4 @@ Then, in your entity add:
         private $title;
     }
     
-From now toolbar should show statistica similar to this one on image above.
+From now toolbar should show statistics similar to this one on image above.
