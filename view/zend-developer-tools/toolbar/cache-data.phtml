@@ -14,10 +14,13 @@
                     DoctrineCacheToolbar
                 </a>
             </span>
+
     <?php if (!$collector->hasCacheLogger()): ?>
+
         <div class="zdt-toolbar-info">
-            <span class="zdt-detail-label">No cache logger defined!</span>
+            <span><strong>No cache logger defined!</strong></span>
         </div>
+
     <?php else: ?>
 
     <?php $data = $collector->getCacheStats(); ?>
