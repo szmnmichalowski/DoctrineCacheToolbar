@@ -81,6 +81,23 @@ class CacheCollector extends AbstractCollector implements AutoHideInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasCacheLogger()
+    {
+        $config = $this->getEntityManager()->getConfiguration();
+
+        if (! $config->isSecondLevelCacheEnabled()) {
+            return false;
+        }
+
+        $logger = $config->getSecondLevelCacheConfiguration()
+            ->getCacheLogger();
+
+        return $logger !== null;
+    }
+
+    /**
      * Get cache stats
      *
      * @return array
