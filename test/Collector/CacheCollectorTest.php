@@ -257,4 +257,68 @@ class CacheCollectorTest extends TestCase
 
         $this->assertFalse($this->collector->canHide());
     }
+
+    /**
+     * @covers \DoctrineCacheToolbar\Collector\CacheCollector::hasCacheLogger
+     */
+    public function testHasCacheLogger()
+    {
+        $this->assertTrue(method_exists($this->collector, 'hasCacheLogger'));
+
+        // Entity manager is set but second level cache is disabled
+        $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(false)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+        $this->collector->setEntityManager($em->reveal());
+
+        $this->assertFalse($this->collector->hasCacheLogger());
+
+        // Entity manager is set but cache logger is null
+        $cacheConfig = $this->prophesize(CacheConfiguration::class);
+        $cacheConfig->getCacheLogger()
+            ->willReturn(null)
+            ->shouldBeCalled();
+        $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(true)
+            ->shouldBeCalled();
+        $config->getSecondLevelCacheConfiguration()
+            ->willReturn($cacheConfig)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+
+        $this->collector->setEntityManager($em->reveal());
+
+        $this->assertFalse($this->collector->hasCacheLogger());
+
+        // Entity manager is set and second level cache is enabled
+        $cacheLogger = $this->prophesize(StatisticsCacheLogger::class);
+        $cacheConfig = $this->prophesize(CacheConfiguration::class);
+        $cacheConfig->getCacheLogger()
+            ->willReturn($cacheLogger)
+            ->shouldBeCalled();
+        $config = $this->prophesize(Configuration::class);
+        $config->isSecondLevelCacheEnabled()
+            ->willReturn(true)
+            ->shouldBeCalled();
+        $config->getSecondLevelCacheConfiguration()
+            ->willReturn($cacheConfig)
+            ->shouldBeCalled();
+        $em = $this->prophesize(EntityManager::class);
+        $em->getConfiguration()
+            ->willReturn($config)
+            ->shouldBeCalled();
+
+        $this->collector->setEntityManager($em->reveal());
+
+        $this->assertTrue($this->collector->hasCacheLogger());
+    }
 }
