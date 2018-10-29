@@ -1,5 +1,4 @@
 <?php if (!$collector->canHide()): ?>
-    <?php $data = $collector->getCacheStats(); ?>
     <div class="zdt-toolbar-entry">
         <div class="zdt-toolbar-preview">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAB8ElEQVR42pVVu07DQBC0Y0RLgehAQiIgENQ0qfmEiAqJAmihAAooEhRapFAhByiAzkX8kIkSJcrDeTgJfAPfwqzloLNzZx+WRrf23c7tze2uFUVR1BCZEMG7rutL4/FYn0wm7sT3LYxmANj4PhgOh8eMX5wjeNgPM2g0jkajiud5Ocuy1mq12iqNhHa7nQN5ZbYu7hdyzpH+wff9Z5Bnq9Xqcj6fXySQjWg3aC7JVxHsGICiIuJOp/MCwq16vR7YQDZGrMVsNVEKIu71epvNZvPQMIwVAtlMxIlSqJwdM61W6+ALz3Q6fcRQIODyigR8KwPfOMG+6LRCjRHpW7/ff+12u0c8YAMD8wWBf0SKyI5wfsftnwmiyeAENyAu8uYSNSZi4FSkP0P8v3TDzX8wEc8BUtwix+9kpIgcmYhjEUcuOEYsn24yUnAiTk83RgqNFzWHWJOqPDg94XLOBY4LKJ4S1lzJSBHZ0XGcXVRXAyV9SZKA5IRANirvGnN1akxp6cY9rm3b2cFgUAbJD0gtAtk4yYNpmutJfUZJ6VBaWIWG67o7jUZjm2xR0UilGwtEWoMElgdAhs+E5iPX3WZAtHsgtCGLQ3ZCIHOVp6UtRvrdE9Jkk2r0sW5XYoilpFCYn6HK+UEGAOkFyM85P0+u3y9QkVJpMsCYjwAAAABJRU5ErkJggg==" />
@@ -11,6 +10,12 @@
                     DoctrineCacheToolbar
                 </a>
             </span>
+        <?php if (!$collector->hasCacheLogger()): ?>
+            <div class="zdt-toolbar-info">
+                <span><strong>No cache logger defined!</strong></span>
+            </div>
+        <?php else: ?>
+            <?php $data = $collector->getCacheStats(); ?>
             <div class="zdt-toolbar-info">
                 <span class="zdt-detail-label">Metadate cache</span>
                 <div class="zdt-detail-context">
@@ -68,6 +73,7 @@
                     <?php endforeach; ?>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 <?php endif; ?>
